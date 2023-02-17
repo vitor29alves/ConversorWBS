@@ -41,7 +41,7 @@ export default function ModalConversor(props: any) {
 
     return navigator.clipboard
       .writeText(text)
-      .catch((error) => console.log(error))
+      .catch((error) => {})
       .finally(() => setCopyFeedback(true));
   };
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Stack, CircularProgress } from "@mui/material";
 import ModalConversor from "./ModalConversor";
 import { ConversorService } from "../Service/service";
-import { red } from "@mui/material/colors";
 
 export default function Conversor() {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -12,10 +11,7 @@ export default function Conversor() {
   const [isLoading, setIsLoading] = useState(false);
 
   function converterBase64(file: any) {
-
-
     if (file.target.files.length > 0) {
-
       var receberArquivo = file.target.files[0];
 
       var carregarArquivo = receberArquivo;
@@ -29,10 +25,9 @@ export default function Conversor() {
 
         setArquivoConvertido(base64);
       };
-      
+
       lerArquivo.readAsDataURL(carregarArquivo);
     }
-
   }
 
   function conversorApi() {
@@ -46,7 +41,7 @@ export default function Conversor() {
       .then((res) => {
         setResultadoConversor(res.data.textoConvertido);
       })
-      .catch((error) => console.log(error))
+      .catch((error) => {})
       .finally(() => {
         setOpenModal(true);
         setIsLoading(false);
@@ -54,10 +49,11 @@ export default function Conversor() {
   }
 
   function resetarInput() {
-    // document.getElementById("arquivo-txt")?.value = "";
+   
+    let fileInput = (document.querySelector("#arquivo-txt") as HTMLInputElement);
+    fileInput.value = "";
+
   }
-
-
 
   return (
     <Box sx={{ margin: "auto" }}>
@@ -77,13 +73,7 @@ export default function Conversor() {
             justifyContent={"flex-start"}
             alignItems={"center"}
           >
-            
-            <input
-              id="arquivo-txt"
-              type="file"
-              onChange={converterBase64}
-            />
-
+            <input id="arquivo-txt" type="file" onChange={converterBase64} />
           </Stack>
         </Stack>
 
@@ -122,9 +112,6 @@ export default function Conversor() {
         setOpenModal={setOpenModal}
         resultadoConversor={resultadoConversor}
       />
-
     </Box>
   );
 }
-
-
