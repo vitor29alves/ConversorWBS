@@ -1,5 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, CircularProgress } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  Stack,
+  CircularProgress,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+
 import ModalConversor from "./ModalConversor";
 import { ConversorService } from "../Service/service";
 
@@ -9,6 +17,16 @@ export default function Conversor() {
   const [resultadoConversor, setResultadoConversor] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [copyFeedback, setCopyFeedback] = useState<boolean>(false);
+
+  const openAlert = () => {
+    setCopyFeedback(true);
+  };
+
+  const closeAlert = () => {
+    setCopyFeedback(false);
+  };
 
   function converterBase64(file: any) {
     if (file.target.files.length > 0) {
@@ -37,22 +55,26 @@ export default function Conversor() {
       arquivoTxt: arquivoConvertido,
     };
 
-    ConversorService.converter(body)
-      .then((res) => {
-        setResultadoConversor(res.data.textoConvertido);
-      })
-      .catch((error) => {})
-      .finally(() => {
-        setOpenModal(true);
-        setIsLoading(false);
-      });
+    if (arquivoConvertido) {
+      ConversorService.converter(body)
+        .then((res) => {
+          setResultadoConversor(res.data.textoConvertido);
+        })
+        .catch((error) => {})
+        .finally(() => {
+          setOpenModal(true);
+          setIsLoading(false);
+        });
+    } else {
+      setIsLoading(false);
+      openAlert();
+    }
   }
 
   function resetarInput() {
-   
-    let fileInput = (document.querySelector("#arquivo-txt") as HTMLInputElement);
+    let fileInput = document.querySelector("#arquivo-txt") as HTMLInputElement;
     fileInput.value = "";
-
+    setArquivoConvertido("");
   }
 
   return (
@@ -112,6 +134,12 @@ export default function Conversor() {
         setOpenModal={setOpenModal}
         resultadoConversor={resultadoConversor}
       />
+
+      <Snackbar open={copyFeedback} autoHideDuration={6000} onClose={closeAlert}>
+        <Alert onClose={closeAlert} severity="error" sx={{ width: "100%" }}>
+          Nenhum arquivo escolhido!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

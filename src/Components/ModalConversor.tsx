@@ -122,6 +122,7 @@ export default function ModalConversor(props: any) {
               Texto copiado!
             </Alert>
           </Snackbar>
+          
         </Box>
       </Dialog>
     </Stack>
