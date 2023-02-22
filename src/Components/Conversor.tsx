@@ -95,7 +95,15 @@ export default function Conversor() {
             justifyContent={"flex-start"}
             alignItems={"center"}
           >
-            <input id="arquivo-txt" type="file" onChange={converterBase64} />
+            <Button variant="outlined" component="label" size="medium">
+              Escolher arquivo
+              <input
+                id="arquivo-txt"
+                hidden
+                type="file"
+                onChange={converterBase64}
+              />
+            </Button>
           </Stack>
         </Stack>
 
@@ -135,7 +143,11 @@ export default function Conversor() {
         resultadoConversor={resultadoConversor}
       />
 
-      <Snackbar open={copyFeedback} autoHideDuration={6000} onClose={closeAlert}>
+      <Snackbar
+        open={copyFeedback}
+        autoHideDuration={6000}
+        onClose={closeAlert}
+      >
         <Alert onClose={closeAlert} severity="error" sx={{ width: "100%" }}>
           Nenhum arquivo escolhido!
         </Alert>
